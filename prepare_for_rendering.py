@@ -10,7 +10,8 @@ def main():
     w = 1000
     h = 1000
     group = 19
-    rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
+    rp_dataset_folder = '/home/luca/RePAIR/dataset/'
+    #'/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
     group_folder = os.path.join(rp_dataset_folder, f'group_{group}')
     output_folder = os.path.join(group_folder, 'top_surfaces')
     if not os.path.exists(output_folder):
@@ -28,12 +29,16 @@ def main():
         print(frag)
         mesh = open3d.io.read_triangle_mesh(os.path.join(group_folder,'processed',frag), enable_post_processing=True)
         pcd = open3d.io.read_point_cloud(os.path.join(group_folder,'processed',f'{frag[:-4]}.ply'))
+        mesh_ply = open3d.io.read_triangle_mesh(os.path.join(group_folder,'processed',f'{frag[:-4]}.ply'), enable_post_processing=True)
+        print("pcd", pcd)
+        print("mesh", mesh_ply)
+        pdb.set_trace()
         # o3d.visualization.draw_geometries([mesh])
         # pdb.set_trace()
         # align face up to the center
         # segment plane (it should be the top surface)
         plane_model, inliers = pcd.segment_plane(distance_threshold=0.05,
-                                             ransac_n=7,
+                                             ransac_n=3,
                                              num_iterations=10000)
         # we take the mean value of the normals of the plane
         inlier_cloud = pcd.select_by_index(inliers)
