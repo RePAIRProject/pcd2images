@@ -70,8 +70,6 @@ def main():
         #mesh = open3d.io.read_triangle_mesh(os.path.join(group_folder,'processed',frag), enable_post_processing=True)
         pcd = open3d.io.read_point_cloud(os.path.join(group_folder,'processed',f'{frag[:-4]}.ply'))
         mesh_ply = open3d.io.read_triangle_mesh(os.path.join(group_folder,'processed',f'{frag[:-4]}.ply'), enable_post_processing=True)
-        # print(mesh_ply, pcd)
-        #pdb.set_trace()
         # extract features
         pcd, features = extract_features(pcd, voxel_size=voxel_size)
         # cluster to divide
