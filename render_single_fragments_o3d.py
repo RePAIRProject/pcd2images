@@ -5,17 +5,18 @@ import matplotlib.pyplot as plt
 import vedo as vd
 import os, random, pdb
 from utils import *
+from mask2d import *
 
 def main():
     w = 1000
     h = 1000
     group = 19
     rp_dataset_folder = '/home/luca/RePAIR/dataset/'
-    rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
-    group_folder = os.path.join(rp_dataset_folder, f'group_{group}', 'only_surfaces')
+    #rp_dataset_folder = '/home/luca/Unive/RePAIR/Datasets/RePAIR_dataset'
+    group_folder = os.path.join(rp_dataset_folder, f'group_{group}', 'top_surfaces')
     output_folder = os.path.join(rp_dataset_folder, f'group_{group}', 'rendered_o3d')
     if not os.path.exists(group_folder):
-        print('Prepare top surfaces using segment_surfaces_for_rendering.py!')
+        print('Nothing found! Please prepare top surfaces using segment_surfaces_for_rendering.py!')
 
     else:
         if not os.path.exists(output_folder):
@@ -42,6 +43,16 @@ def main():
             vis.capture_depth_image(depth_img)
             print('saved', col_img)
             del vis
+
+            c_img = plt.imread(col_img)
+            d_img = plt.imread(depth_img)
+            mask = create_mask(depth_img)
+            contour = create_contour(mask)
+            plt.subplot(121)
+            plt.imshow(mask)
+            plt.subplot(122)
+            plt.imshow(contour)
+            pdb.set_trace()
 
 
 if __name__ == "__main__":
