@@ -11,8 +11,8 @@ def main():
     h = 1000
     group = 19
     rp_dataset_folder = '/home/luca/RePAIR/dataset/'
-    #'/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
-    group_folder = os.path.join(rp_dataset_folder, f'group_{group}', 'top_surfaces')
+    rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
+    group_folder = os.path.join(rp_dataset_folder, f'group_{group}', 'only_surfaces')
     output_folder = os.path.join(rp_dataset_folder, f'group_{group}', 'rendered_o3d')
     if not os.path.exists(group_folder):
         print('Prepare top surfaces using segment_surfaces_for_rendering.py!')

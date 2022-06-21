@@ -51,9 +51,9 @@ def main():
     h = 1000
     group = 19
     rp_dataset_folder = '/home/luca/RePAIR/dataset/'
-    #'/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
+    rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
     group_folder = os.path.join(rp_dataset_folder, f'group_{group}')
-    output_folder = os.path.join(group_folder, 'top_surfaces')
+    output_folder = os.path.join(group_folder, 'only_surfaces')
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
 
