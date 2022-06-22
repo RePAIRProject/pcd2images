@@ -3,9 +3,12 @@ from visualization import VisOpen3D
 import numpy as np
 import matplotlib.pyplot as plt
 import vedo as vd
-import os, random, pdb
+import os
+import random
+import pdb
 from utils import *
 from mask2d import *
+
 
 def main():
     w = 1000
@@ -13,10 +16,14 @@ def main():
     group = 19
     rp_dataset_folder = '/home/luca/RePAIR/dataset/'
     #rp_dataset_folder = '/home/luca/Unive/RePAIR/Datasets/RePAIR_dataset'
-    group_folder = os.path.join(rp_dataset_folder, f'group_{group}', 'top_surfaces')
-    output_folder = os.path.join(rp_dataset_folder, f'group_{group}', 'rendered_o3d')
+    rp_dataset_folder = '/Users/Palma/Documents/Projects/Unive/RePAIR/Datasets/RePAIR_dataset'
+    group_folder = os.path.join(
+        rp_dataset_folder, f'group_{group}', 'only_surfaces')
+    output_folder = os.path.join(
+        rp_dataset_folder, f'group_{group}', 'rendered_o3d_mask')
     if not os.path.exists(group_folder):
-        print('Nothing found! Please prepare top surfaces using segment_surfaces_for_rendering.py!')
+        print(f'Nothing found in {group_folder}!')
+        print('Please prepare top surfaces using segment_surfaces_for_rendering.py!')
 
     else:
         if not os.path.exists(output_folder):
@@ -30,7 +37,8 @@ def main():
 
         for frag in frags:
             print(frag)
-            mesh = open3d.io.read_triangle_mesh(os.path.join(group_folder, frag), enable_post_processing=True)
+            mesh = open3d.io.read_triangle_mesh(os.path.join(
+                group_folder, frag))  # , enable_post_processing=True)
 
             vis = VisOpen3D(width=w, height=h, visible=window_visible)
             vis.add_geometry(mesh)
@@ -39,20 +47,21 @@ def main():
             # save to file
             col_img = os.path.join(output_folder, f"{frag[:-4]}.png")
             vis.capture_screen_image(col_img)
-            depth_img = os.path.join(output_folder,f"{frag[:-4]}_depth.png")
+            depth_img = os.path.join(output_folder, f"{frag[:-4]}_depth.png")
             vis.capture_depth_image(depth_img)
             print('saved', col_img)
             del vis
 
             c_img = plt.imread(col_img)
             d_img = plt.imread(depth_img)
-            mask = create_mask(depth_img)
+            mask = create_simple_mask(d_img)
             contour = create_contour(mask)
-            plt.subplot(121)
-            plt.imshow(mask)
-            plt.subplot(122)
-            plt.imshow(contour)
-            pdb.set_trace()
+            plt.imsave(os.path.join(output_folder,
+                                    f"{frag[:-4]}_mask.png"), mask, cmap='gray')
+            plt.imsave(os.path.join(
+                output_folder, f"{frag[:-4]}_masked.png"), c_img * np.dstack((mask, mask, mask)))
+            plt.imsave(os.path.join(output_folder,
+                                    f"{frag[:-4]}_contour.png"), contour, cmap='gray')
 
 
 if __name__ == "__main__":

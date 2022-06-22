@@ -2,19 +2,26 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2 as cv
 import scipy.signal
-import pdb, sys
+import pdb
+import sys
+
 
 def main(num):
 
-    dimg = plt.imread(f'/home/luca/RePAIR/dataset/group_19/rendered_o3d_full/RPf_{num:05d}_depth.png')
-    cimg = plt.imread(f'/home/luca/RePAIR/dataset/group_19/rendered_o3d_full/RPf_{num:05d}.png')
+    dimg = plt.imread(
+        f'/home/luca/RePAIR/dataset/group_19/rendered_o3d_full/RPf_{num:05d}_depth.png')
+    cimg = plt.imread(
+        f'/home/luca/RePAIR/dataset/group_19/rendered_o3d_full/RPf_{num:05d}.png')
     mask = create_mask(dimg)
     contour = create_contour(mask)
     #pdb.set_trace()
-    plt.imsave(f'/home/luca/RePAIR/dataset/group_19/rendered_o3d_full/RPf_{num:05d}_mask.png', mask, cmap='gray')
-    plt.imsave(f'/home/luca/RePAIR/dataset/group_19/rendered_o3d_full/RPf_{num:05d}_contour.png', contour, cmap='gray')
+    plt.imsave(
+        f'/home/luca/RePAIR/dataset/group_19/rendered_o3d_full/RPf_{num:05d}_mask.png', mask, cmap='gray')
+    plt.imsave(
+        f'/home/luca/RePAIR/dataset/group_19/rendered_o3d_full/RPf_{num:05d}_contour.png', contour, cmap='gray')
     plt.imsave(f'/home/luca/RePAIR/dataset/group_19/rendered_o3d_full/RPf_{num:05d}_masked.png',
-            cimg * np.dstack((mask, mask, mask)))
+               cimg * np.dstack((mask, mask, mask)))
+
 
 def create_mask(depth_img):
 
@@ -35,13 +42,18 @@ def create_mask(depth_img):
     largest_cc_area = 0
     for j in range(1, ccs_num):
         #pdb.set_trace()
-        cc_area = np.sum(np.isclose(ccs,j))
+        cc_area = np.sum(np.isclose(ccs, j))
         #print(j, cc_area)
         if cc_area > largest_cc_area:
             largest_cc_index = j
             largest_cc_area = cc_area
     top_surface = np.isclose(ccs, largest_cc_index)
     return top_surface
+
+
+def create_simple_mask(depth_img):
+    foreground = depth_img > 0
+    return foreground
 
 
 def create_contour(mask):
@@ -57,6 +69,7 @@ def create_contour(mask):
     filt = scipy.signal.convolve2d(mask, kernel, mode='same')
     contours = np.abs(filt) > 0
     return contours
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
