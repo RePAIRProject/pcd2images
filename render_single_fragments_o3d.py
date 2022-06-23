@@ -16,11 +16,11 @@ def main():
     group = 19
     rp_dataset_folder = '/home/luca/RePAIR/dataset/'
     #rp_dataset_folder = '/home/luca/Unive/RePAIR/Datasets/RePAIR_dataset'
-    rp_dataset_folder = '/Users/Palma/Documents/Projects/Unive/RePAIR/Datasets/RePAIR_dataset'
+    #rp_dataset_folder = '/Users/Palma/Documents/Projects/Unive/RePAIR/Datasets/RePAIR_dataset'
     group_folder = os.path.join(
         rp_dataset_folder, f'group_{group}', 'only_surfaces')
     output_folder = os.path.join(
-        rp_dataset_folder, f'group_{group}', 'rendered_o3d_mask')
+        rp_dataset_folder, f'group_{group}', 'rendered_o3d_mask_arb')
     if not os.path.exists(group_folder):
         print(f'Nothing found in {group_folder}!')
         print('Please prepare top surfaces using segment_surfaces_for_rendering.py!')
