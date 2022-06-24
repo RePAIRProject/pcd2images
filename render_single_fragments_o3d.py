@@ -33,7 +33,8 @@ def main():
         print(f'in group {group} found {len(frags)} fragments (.obj)')
 
         #create window
-        window_visible = True
+        window_visible = False
+        draw_camera = False
 
         for frag in frags:
             print(frag)
@@ -45,7 +46,7 @@ def main():
             vis.load_view_point("single_fragment_vp.json")
 
             # # draw camera
-            if window_visible:
+            if window_visible and draw_camera:
                 #vis.load_view_point("robot_view_point.json")
                 intrinsic = vis.get_view_point_intrinsics()
                 extrinsic = vis.get_view_point_extrinsics()
@@ -56,7 +57,7 @@ def main():
                 #vis.load_view_point("view_point.json")
                 vis.run()
 
-            pdb.set_trace()
+            #pdb.set_trace()
             # save to file
             col_img = os.path.join(output_folder, f"{frag[:-4]}.png")
             vis.capture_screen_image(col_img)
