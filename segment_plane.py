@@ -15,10 +15,10 @@ def main():
     h = 1000
     group = 19
     #rp_dataset_folder = '/home/luca/RePAIR/dataset/'
-    #rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
-    rp_dataset_folder = '/Users/Palma/Documents/Projects/Unive/RePAIR/Datasets/RePAIR_dataset'
+    rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
+    #rp_dataset_folder = '/Users/Palma/Documents/Projects/Unive/RePAIR/Datasets/RePAIR_dataset'
     group_folder = os.path.join(rp_dataset_folder, f'group_{group}')
-    output_folder = os.path.join(group_folder, 'only_surfaces')
+    output_folder = os.path.join(group_folder, 'only_top_surfaces')
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
 
@@ -32,14 +32,14 @@ def main():
         print(frag)
         #mesh = open3d.io.read_triangle_mesh(os.path.join(group_folder,'processed',frag), enable_post_processing=True)
         mesh_path = os.path.join(
-            group_folder, 'processed', f'{frag[:-4]}.ply')
+            group_folder, input_folder_name, f'{frag[:-8]}pcl.ply')
         pcd = o3d.io.read_point_cloud(mesh_path)
         # mesh_ply = open3d.io.read_triangle_mesh(os.path.join(
         #     group_folder, 'processed', f'{frag[:-4]}.obj'))  # , enable_post_processing=True)
 
         ms.load_new_mesh(os.path.join(
             group_folder, input_folder_name, f'{frag[:-4]}.obj'))
-        plane_model, inliers = pcd.segment_plane(distance_threshold=0.9,
+        plane_model, inliers = pcd.segment_plane(distance_threshold=0.95,
                                                  ransac_n=3,
                                                  num_iterations=1000)
         top_surface = pcd.select_by_index(inliers)
@@ -50,8 +50,13 @@ def main():
             selected_vertices[j] = 1
         m.add_vertex_custom_scalar_attribute(selected_vertices, 'selected')
         #pdb.set_trace()
-        ms.conditional_vertex_selection(condselect='selected==0')
-        ms.delete_selected_vertices()
+
+        # new version
+        ms.compute_selection_by_condition_per_vertex(condselect='selected==0')
+        ms.meshing_remove_selected_vertices()
+        # old version
+        #ms.conditional_vertex_selection(condselect='selected==0')
+        #ms.delete_selected_vertices()
 
         # ms.print_filter_parameter_list('conditional_vertex_selection')
         # ms.apply_filter('conditional_vertex_selection',

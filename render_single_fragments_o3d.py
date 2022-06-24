@@ -15,15 +15,15 @@ def main():
     h = 1000
     group = 19
     rp_dataset_folder = '/home/luca/RePAIR/dataset/'
-    #rp_dataset_folder = '/home/luca/Unive/RePAIR/Datasets/RePAIR_dataset'
+    rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
     #rp_dataset_folder = '/Users/Palma/Documents/Projects/Unive/RePAIR/Datasets/RePAIR_dataset'
     group_folder = os.path.join(
-        rp_dataset_folder, f'group_{group}', 'only_surfaces')
+        rp_dataset_folder, f'group_{group}', 'only_top_surfaces')
     output_folder = os.path.join(
         rp_dataset_folder, f'group_{group}', 'rendered_o3d_mask_arb')
     if not os.path.exists(group_folder):
         print(f'Nothing found in {group_folder}!')
-        print('Please prepare top surfaces using segment_surfaces_for_rendering.py!')
+        print('Please prepare top surfaces using `segment_surfaces_for_rendering.py` or `segment_plane.py!`')
 
     else:
         if not os.path.exists(output_folder):
@@ -33,7 +33,7 @@ def main():
         print(f'in group {group} found {len(frags)} fragments (.obj)')
 
         #create window
-        window_visible = False
+        window_visible = True
 
         for frag in frags:
             print(frag)
@@ -44,6 +44,19 @@ def main():
             vis.add_geometry(mesh)
             vis.load_view_point("single_fragment_vp.json")
 
+            # # draw camera
+            if window_visible:
+                #vis.load_view_point("robot_view_point.json")
+                intrinsic = vis.get_view_point_intrinsics()
+                extrinsic = vis.get_view_point_extrinsics()
+                vis.draw_camera(intrinsic, extrinsic, scale=0.5, color=[0.8, 0.2, 0.8])
+                vis.update_view_point(intrinsic, extrinsic)
+            #
+            # if window_visible:
+                #vis.load_view_point("view_point.json")
+                vis.run()
+
+            pdb.set_trace()
             # save to file
             col_img = os.path.join(output_folder, f"{frag[:-4]}.png")
             vis.capture_screen_image(col_img)
