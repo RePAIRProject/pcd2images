@@ -13,7 +13,7 @@ import pymeshlab
 def main():
     w = 1000
     h = 1000
-    group = 19
+    group = 34
     #rp_dataset_folder = '/home/luca/RePAIR/dataset/'
     rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
     #rp_dataset_folder = '/Users/Palma/Documents/Projects/Unive/RePAIR/Datasets/RePAIR_dataset'
@@ -34,12 +34,13 @@ def main():
         mesh_path = os.path.join(
             group_folder, input_folder_name, f'{frag[:-8]}pcl.ply')
         pcd = o3d.io.read_point_cloud(mesh_path)
+
         # mesh_ply = open3d.io.read_triangle_mesh(os.path.join(
         #     group_folder, 'processed', f'{frag[:-4]}.obj'))  # , enable_post_processing=True)
 
         ms.load_new_mesh(os.path.join(
             group_folder, input_folder_name, f'{frag[:-4]}.obj'))
-        plane_model, inliers = pcd.segment_plane(distance_threshold=0.95,
+        plane_model, inliers = pcd.segment_plane(distance_threshold=0.025,
                                                  ransac_n=3,
                                                  num_iterations=1000)
         top_surface = pcd.select_by_index(inliers)
@@ -48,6 +49,9 @@ def main():
         selected_vertices = np.zeros((vertices_num))
         for j in inliers:
             selected_vertices[j] = 1
+        print(f"{np.sum(selected_vertices)}/{vertices_num} ({np.sum(selected_vertices)/vertices_num*100}%) belonging to the plane")
+        # o3d.visualization.draw_geometries([top_surface])
+        # pdb.set_trace()
         m.add_vertex_custom_scalar_attribute(selected_vertices, 'selected')
         #pdb.set_trace()
 

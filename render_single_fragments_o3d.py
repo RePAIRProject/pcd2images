@@ -13,7 +13,7 @@ from mask2d import *
 def main():
     w = 1000
     h = 1000
-    group = 19
+    group = 34
     rp_dataset_folder = '/home/luca/RePAIR/dataset/'
     rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
     #rp_dataset_folder = '/Users/Palma/Documents/Projects/Unive/RePAIR/Datasets/RePAIR_dataset'
