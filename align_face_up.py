@@ -19,9 +19,9 @@ def get_pcl_from_mesh(mesh, est_normals=False):
 def main():
     w = 1000
     h = 1000
-    group = 34
-    rp_dataset_folder = '/home/luca/RePAIR/dataset/'
-    rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
+    group = 28
+    #rp_dataset_folder = '/home/luca/RePAIR/dataset/'
+    rp_dataset_folder = '/home/lucap/datasets/repair'
     group_folder = os.path.join(rp_dataset_folder, f'group_{group}')
     output_folder = os.path.join(group_folder, 'facing_up')
     if not os.path.exists(output_folder):

@@ -13,9 +13,9 @@ import pymeshlab
 def main():
     w = 1000
     h = 1000
-    group = 34
+    group = 28
     #rp_dataset_folder = '/home/luca/RePAIR/dataset/'
-    rp_dataset_folder = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
+    rp_dataset_folder = '/home/lucap/datasets/repair'
     #rp_dataset_folder = '/Users/Palma/Documents/Projects/Unive/RePAIR/Datasets/RePAIR_dataset'
     group_folder = os.path.join(rp_dataset_folder, f'group_{group}')
     output_folder = os.path.join(group_folder, 'only_top_surfaces')
