@@ -46,3 +46,5 @@ where `$blend_scene` is the blender file with the scene (it contains a camera an
 
 It relies on `blender` and `bpy`.
 
+# Other stuff 
+The other files (in the `misc` folder) are old attempts, which have different problems (there is a renderer with opencv and some variations for `.ply` files). Just ignore them.
