@@ -4,7 +4,7 @@ Code to render image of the top flat *textured* surface of a fresco fragment fro
 
 | Mesh | Image |
 |:----:|:-----:|
-|![3d mesh](imgs/mesh.png)|![rendered 2d image](imgs/example_rendered.png)|
+|![3d mesh](imgs/mesh.jpg)|![rendered 2d image](imgs/example_rendered.jpg)|
 | the 3d mesh (meshlab) | the rendered 2d image |
 
 ## WARNING: 
