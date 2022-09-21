@@ -1,4 +1,0 @@
-open3d
-vedo
-pymeshlab
-opencv-python
