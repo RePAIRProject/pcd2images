@@ -1,6 +1,6 @@
 
 # variables 
-group=19
+group=28
 blend_scene='example_scene.blend'
 output_root_folder='/media/lucap/big_data/datasets/repair/rendering/'
 
