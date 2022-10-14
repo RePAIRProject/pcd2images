@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os, sys
 import random
 import pdb, argparse
-
+from utils import *
 
 def get_pcl_from_mesh(mesh, est_normals=False):
     pcl = o3d.geometry.PointCloud()
