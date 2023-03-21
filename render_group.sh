@@ -1,7 +1,7 @@
 
 # variables 
 group=32
-blend_scene='example_scene.blend'
+blend_scene='example_scene_alpha0.blend'
 output_root_folder='/media/lucap/big_data/datasets/repair/rendering/'
 
 # align with the axis
