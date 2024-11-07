@@ -7,10 +7,12 @@ Code to render image of the top flat *textured* surface of a fresco fragment fro
 |![3d mesh](imgs/mesh.jpg)|![rendered 2d image](imgs/example_rendered.jpg)|
 | the 3d mesh (meshlab) | the rendered 2d image |
 
-## WARNING: 
-work in progress, it may not always work as intended. At the moment is relying on having a large top flat surface, otherwise it will fails. 
-Dependencies should be easy (`open3d`, `numpy`, `blender`), but I do not have documentation on the installation for now.
+## Note
+It relies on detecting a flat surface, otherwise it may fails. 
+Dependencies should be easy (`open3d`, `numpy`, `blender`), more detailed documentation will follow.
 And also remember to change the paths, they are hard-coded.
+
+For the RePAIR pipeline, it was used after segmentation (so that the flat surface was already detected).
 
 # Usage 
 The fastest way is to use the `render_group.sh` bash script.
