@@ -1,6 +1,6 @@
 
 # variables 
-group=1
+group=3
 blend_scene='example_scene_high_contrast_filmic_transparent.blend'
 #output_root_folder='/media/lucap/big_data/datasets/repair/rendering/4k'
 

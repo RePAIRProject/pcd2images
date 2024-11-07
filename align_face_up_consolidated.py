@@ -34,7 +34,7 @@ def main(group):
     print(f'in group {group} found {len(frags)} fragments (.obj)')
     print(frags)
 
-    debug = True
+    debug = False
     for frag in frags:
         print(frag)
         mesh = o3d.io.read_triangle_mesh(os.path.join(
@@ -76,7 +76,7 @@ def main(group):
         mesh.translate(np.array([0, 0, -max_bounds[2]]))
         pcd.translate(np.array([0, 0, -max_bounds[2]]))
         #print("mesh", mesh)
-        pdb.set_trace()
+        # pdb.set_trace()
         o3d.io.write_point_cloud(os.path.join(
             output_folder, f'{frag[:-4]}_pcl.ply'), pcd)
         o3d.io.write_triangle_mesh(os.path.join(
