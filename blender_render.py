@@ -9,11 +9,23 @@ if group_index > -1:
     group = py_args[group_index+1]
 else:
     group = 15 #args.group
-#pdb.set_trace()
-fragments_folder = f'/media/lucap/big_data/datasets/repair/group_{group}/facing_up'
+
+output_index = py_args.index('output')
+if output_index > -1:
+    output_path = py_args[output_index+1]
+else:
+    output_path = 'output'
+
+# THE DATASET ROOT PATH
+# uni pc
+# base_path = '/media/lucap/big_data/datasets/repair'
+# home pc 
+base_path = '/home/palma/Unive/RePAIR/Datasets/RePAIR_dataset'
+
+fragments_folder = os.path.join(base_path, f'group_{group}/facing_up')
 files = os.listdir(fragments_folder)
 objs = [file for file in files if file[-4:] == '.obj']
-render_group_folder = f"/media/lucap/big_data/datasets/repair/rendering/4k/group_{group}"
+render_group_folder = os.path.join(os.getcwd(), output_path, f'group_{group}')
 os.makedirs(render_group_folder, exist_ok=True)
 
 for frag in objs:
