@@ -64,7 +64,8 @@ def main(group):
             # pcd.paint_uniform_color([0, 0, 1])
             show_detected_surface(pcd, inliers)
 
-        mean_point = np.mean(np.asarray(pcd.points), axis=0)
+        # PLANE CLOUD!
+        mean_point = np.mean(np.asarray(plane_cloud.points), axis=0)
         # rotate with z facing up
         align_face_up(mesh, normal_vector, mean_point)
         align_face_up(pcd, normal_vector, mean_point)

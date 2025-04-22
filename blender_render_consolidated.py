@@ -13,7 +13,7 @@ else:
 fragments_folder = f'/media/lucap/big_data/datasets/repair/consolidated_fragments/group_{group}/facing_up'
 files = os.listdir(fragments_folder)
 objs = [file for file in files if file[-4:] == '.obj']
-render_group_folder = f"/media/lucap/big_data/datasets/repair/rendering/retextured/group_{group}"
+render_group_folder = f"/media/lucap/big_data/datasets/repair/rendering/retextured/group_{group}_test"
 os.makedirs(render_group_folder, exist_ok=True)
 
 for frag in objs:
