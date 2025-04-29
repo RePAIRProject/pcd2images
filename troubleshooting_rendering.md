@@ -1,0 +1,1 @@
+# group 47 libpng error

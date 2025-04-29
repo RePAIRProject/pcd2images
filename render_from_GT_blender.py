@@ -23,22 +23,37 @@ bpy.ops.wm.open_mainfile(filepath=decoded_path)
 output_folder = f'/media/lucap/big_data/datasets/repair/ground_truth/RENDERING2D/{group_num}'
 os.makedirs(output_folder, exist_ok=True)
 
+
+# camera = bpy.data.cameras.new("Camera")
+
+bpy.ops.object.light_add(type='SUN')
+bpy.ops.object.camera_add()
+
 obj_scene = bpy.data.objects
-camera = bpy.data.cameras.new("Camera")
 
 # scene
 scene = bpy.data.scenes[0]
+# breakpoint()
+
 # resolution
 scene.render.resolution_x = 2000
 scene.render.resolution_y = 2000
+scene.render.film_transparent = True
+scene.eevee.use_shadows = False
+scene.view_settings.look = 'AgX - Medium High Contrast'
 
 # get the camera
 for obj in obj_scene:
     if 'Camera' in obj.name:
         camera = obj
+    elif 'Sun' in obj.name:
+        sun = obj
+    else:
+        obj.hide_render = True
 
-
+# breakpoint()
 # add the light 
+scene.camera = camera
 
 gt = {}
 
@@ -49,6 +64,7 @@ for obj in obj_scene:
         gt[cur_frag_name] = [obj.location[0], obj.location[1], 0]
         obj.hide_render = False
         camera.location = [obj.location[0], obj.location[1], 500]
+        sun.location = [obj.location[0], obj.location[1], 500]
         for other_obj in obj_scene:  
             if 'RPf' in other_obj.name and other_obj.name != cur_frag_name:
                 other_obj.hide_render = True
@@ -58,6 +74,9 @@ for obj in obj_scene:
 with open(os.path.join(output_folder, f'gt_{group_num}.json'), 'w') as jgt:
     json.dump(gt, jgt, indent=3)
 
+
+# camera.delete()
+# sun.delete()
 
 # breakpoint()
 
