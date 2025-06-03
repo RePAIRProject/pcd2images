@@ -320,7 +320,7 @@ def set_cutplane(m, tol_angle=30):
 
     test_m = m.clone().clean().extract_largest_region()
 
-    ids_ = test_m.inside_points(m.points, invert=True, tol=0.75, return_ids=True)
+    ids_ = test_m.inside_points(m.points, invert=True, tol=0.9, return_ids=True)
 
     # # Create an inverted mask instead of calling inside_points(invert=True)
     # mask = np.ones(test_m.points.shape[0], dtype=bool)
