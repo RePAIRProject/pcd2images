@@ -134,11 +134,11 @@ def main():
     # Set the tolerance angle for the surface cut plane, the smaller the angle, the more aggressive, the more faces are removed
     tol_angle = 25
     # Iterate over all folders
-    for f in os.scandir('/media/lucap/big_data/datasets/repair/ground_truth/NeurIPS_2024/3D_Fragments/assembled_objects/'):
+    for f in os.scandir('/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED'):
         print(f.name)
-
-        input_folder = '/media/lucap/big_data/datasets/repair/ground_truth/NeurIPS_2024/3D_Fragments/assembled_objects/'+f.name+'/'
-        output_folder = input_folder.replace("3D_Fragments", "2D_Fragments_v2")
+        breakpoint()
+        input_folder = '/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED/'+f.name+'/'
+        output_folder = input_folder.replace("PUZZLES", "PUZZLES_2D")
 
         if os.path.exists(output_folder):
             continue
@@ -159,7 +159,7 @@ def main():
         x0m, x1m, y0m, y1m = (1e10, 0, 1e10, 0)
         for i, (mesh_file, texture_file) in vedo.progressbar(enumerate(zip(mesh_files, texture_files))):
             m = vedo.Mesh(mesh_file).texture(texture_file).lighting("off")
-
+            m.rotate_x(90)
             m = set_cutplane(m, tol_angle)
 
             # o3d_mesh = vedo.vedo2open3d(m)
@@ -320,7 +320,7 @@ def set_cutplane(m, tol_angle=30):
 
     test_m = m.clone().clean().extract_largest_region()
 
-    ids_ = test_m.inside_points(m.points, invert=True, tol=0.9, return_ids=True)
+    ids_ = test_m.inside_points(m.points, invert=True, tol=0.75, return_ids=True)
 
     # # Create an inverted mask instead of calling inside_points(invert=True)
     # mask = np.ones(test_m.points.shape[0], dtype=bool)
