@@ -223,7 +223,7 @@ def main():
 
         # Scale factor to fit in sizex/sizey canvas
         max_dimension = max(x_range, y_range)
-        scale_factor = 3
+        scale_factor = 6
         sizex = max_dimension * scale_factor
         sizey = max_dimension * scale_factor
         # breakpoint()
@@ -293,30 +293,30 @@ def main():
         plotter.close()
 
 
-        breakpoint()
-        # Code to evaluate the saved images and whether they are correct
-        image_files = natsort.natsorted(glob.glob(output_folder + "*.png"))
-        image_files = list(filter(lambda k: 'preview' not in k, image_files))
+        # breakpoint()
+        # # Code to evaluate the saved images and whether they are correct
+        # image_files = natsort.natsorted(glob.glob(output_folder + "*.png"))
+        # image_files = list(filter(lambda k: 'preview' not in k, image_files))
         
-        # Load saved images
-        images = []
-        images_transformed = []
-        for i, image_file in vedo.progressbar(enumerate(image_files)):
-            img = vedo.Image(image_file, channels=4)
-            img_transformed = vedo.Image(image_file, channels=4).apply_transform(tform)
-            # img_transformed = img.clone().apply_transform(tform)
-            images.append(img)
-            images_transformed.append(img_transformed)
+        # # Load saved images
+        # images = []
+        # images_transformed = []
+        # for i, image_file in vedo.progressbar(enumerate(image_files)):
+        #     img = vedo.Image(image_file, channels=4)
+        #     img_transformed = vedo.Image(image_file, channels=4).apply_transform(tform)
+        #     # img_transformed = img.clone().apply_transform(tform)
+        #     images.append(img)
+        #     images_transformed.append(img_transformed)
         
-        # check if the screenshots are correct
-        plt = vedo.Plotter(size=(sizex, sizey))
-        # Without transformation
-        vedo.show(meshes_projected, images, axes=1, zoom="tightest", interactive=True).close()
-        plt.close()
+        # # check if the screenshots are correct
+        # plt = vedo.Plotter(size=(sizex, sizey))
+        # # Without transformation
+        # vedo.show(meshes_projected, images, axes=1, zoom="tightest", interactive=True).close()
+        # plt.close()
         
-        # With transformation
-        vedo.show([meshes_projected, images_transformed], N=2, axes=1, zoom="tightest", interactive=True).close()
-        breakpoint()
+        # # With transformation
+        # vedo.show([meshes_projected, images_transformed], N=2, axes=1, zoom="tightest", interactive=True).close()
+        # breakpoint()
 
     return 0
 
