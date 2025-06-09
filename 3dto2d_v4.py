@@ -136,18 +136,29 @@ tol_angle = 60
 # Set the height offset of the plane where everything below is gonna be removed
 z_offset = 1.5
 
+# HARD CODED PATH
+input_folder_ = '/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED'
+
 def main():
     # Iterate over all folders
     # for f in os.scandir('/media/pose_est_rp/repair_gt/3D_Fragments/assembled_objects/'):
-    for f in os.scandir('/media/pose_est_rp/Solved/3D_fragments/'):
-        print(f.name)
+    # for f in os.scandir('/media/pose_est_rp/Solved/3D_fragments/'):
+    puzzles = os.listdir(input_folder_)
+    puzzles_sorted = natsort.natsorted(puzzles)
+    print("Full list of puzzles:\n")
+    for puz in puzzles_sorted:
+        print(puz)
+
+    for folder_name in puzzles_sorted:
+        print("-" * 50)
+        print(folder_name)
 
         # if f.name is not "puzzle_0000003_RP_group_3":
         #     continue
 
         # input_folder = '/media/pose_est_rp/repair_gt/3D_Fragments/assembled_objects/'+f.name+'/'
-        input_folder = '/media/pose_est_rp/Solved/3D_fragments/' + f.name + '/'
-        output_folder = input_folder.replace("3D_fragments", "2D_fragments")
+        input_folder = os.path.join(input_folder_, folder_name) + '/'
+        output_folder = input_folder.replace("PUZZLES", "PUZZLES_2D_noscaling")
 
         if os.path.exists(output_folder):
             continue
@@ -208,9 +219,7 @@ def main():
 
         # Scale factor to fit in sizex/sizey canvas
         max_dimension = max(x_range, y_range)
-        scale_factor = sizex / max_dimension
-
-
+        scale_factor = 1 #sizex / max_dimension
 
         # Create a LinearTransform object for mapping pixels to cartesian coordinates
         tform = vedo.LinearTransform()

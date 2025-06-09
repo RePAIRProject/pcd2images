@@ -130,15 +130,24 @@ def save_json_file(filename, metadata):
 #
 #     return center_point, normal
 
+tol_angle = 25
+input_folder_ = '/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED'
+
 def main():
     # Set the tolerance angle for the surface cut plane, the smaller the angle, the more aggressive, the more faces are removed
-    tol_angle = 25
+    
+    puzzles = os.listdir(input_folder_)
+    puzzles_sorted = natsort.natsorted(puzzles)
+    print("Full list of puzzles:\n")
+    for puz in puzzles_sorted:
+        print(puz)
     # Iterate over all folders
-    for f in os.scandir('/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED'):
-        print(f.name)
-        breakpoint()
-        input_folder = '/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED/'+f.name+'/'
-        output_folder = input_folder.replace("PUZZLES", "PUZZLES_2D")
+    for folder_name in puzzles_sorted:
+        print("-" * 50)
+        print(folder_name)
+
+        input_folder = os.path.join(input_folder_, folder_name) + '/'
+        output_folder = input_folder.replace("PUZZLES", "PUZZLES_2D_noscaling")
 
         if os.path.exists(output_folder):
             continue
@@ -201,8 +210,6 @@ def main():
         # Scale factor to fit in sizex/sizey canvas
         max_dimension = max(x_range, y_range)
         scale_factor = sizex / max_dimension
-
-
 
         # Create a LinearTransform object for mapping pixels to cartesian coordinates
         tform = vedo.LinearTransform()
