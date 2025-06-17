@@ -131,16 +131,16 @@ def save_json_file(filename, metadata):
 #     return center_point, normal
 
 # parameters to modify for affecting the output
-# Set the tolerance angle for the surface cut plane, the smaller the angle, the more aggressive, 
-# the more faces are removed
-tol_angle = 60
+# Set the tolerance angle for the surface cut plane, the smaller the angle, the more aggressive, the more faces are removed
+tol_angle = 80
 # Set the height offset of the plane where everything below is gonna be removed
-z_offset = 1.5
+z_offset = 1.
 
 # HARD CODED PATH
 input_folder_ = '/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED'
 
 def main():
+    global z_offset
     # Iterate over all folders
     # for f in os.scandir('/media/pose_est_rp/repair_gt/3D_Fragments/assembled_objects/'):
     # for f in os.scandir('/media/pose_est_rp/Solved/3D_fragments/'):
@@ -154,12 +154,12 @@ def main():
         print("-" * 50)
         print(folder_name)
 
-        if folder_name != "puzzle_0000107_RP_group_21":
-            continue
+        # if f.name is not "puzzle_0000003_RP_group_3":
+        #     continue
 
         # input_folder = '/media/pose_est_rp/repair_gt/3D_Fragments/assembled_objects/'+f.name+'/'
         input_folder = os.path.join(input_folder_, folder_name) + '/'
-        output_folder = input_folder.replace("PUZZLES", "PUZZLES_2D_scale3")
+        output_folder = input_folder.replace("PUZZLES", "PUZZLES_2D_scale6")
 
         if os.path.exists(output_folder):
             continue
@@ -180,7 +180,29 @@ def main():
         for i, (mesh_file, texture_file) in vedo.progressbar(enumerate(zip(mesh_files, texture_files))):
             m = vedo.Mesh(mesh_file).texture(texture_file).lighting("off")
             m.rotate_x(90)
-            m = set_cutplane(m, tol_angle)
+            # if i == 6:
+            #     z_offset = 2.
+            #     m = set_cutplane(m, tol_angle)
+            # elif i == 11:
+            #     z_offset = .1
+            #     m = set_cutplane(m, tol_angle)
+            # elif i == 12:
+            #     z_offset = .8
+            #     m = set_cutplane(m, tol_angle)
+            # elif i == 1:
+            #     z_offset = .8
+            #     m = set_cutplane(m, tol_angle)
+            # elif i == 9:
+            #     z_offset = .8
+            #     m = set_cutplane(m, tol_angle)
+            # elif i == 4:
+            #     z_offset = .5
+            #     m = set_cutplane(m, tol_angle)
+            # else:
+            #     z_offset = 1.
+            #     m = set_cutplane(m, tol_angle)
+
+            # m = set_cutplane(m, tol_angle)
 
             # o3d_mesh = vedo2open3d(m)
             # # o3d.visualization.draw_geometries([o3d_mesh])
@@ -244,6 +266,12 @@ def main():
 
         mesh_data['transform'] = tform.matrix.tolist()
 
+        # breakpoint()
+        # 2D pixel data
+        for j, frag in enumerate(fragments):
+            frag_data = mesh_data['fragments'][j]
+            frag_data['pixel_pos'] = vedo.Points(np.asarray([frag_data['position']]), c='green', r=10).apply_transform(np.linalg.inv(tform.matrix)).points[0].tolist()
+
         # Create adjacency matrix for connected pieces
         tiles = copy.deepcopy(meshes_projected)
         dists = {}
@@ -259,7 +287,7 @@ def main():
         connections = []
         lines = []
         for i, j in dists:
-            if dists[(i, j)] < 10:  # Threshold for connection
+            if dists[(i, j)] < 8:  # Threshold for connection
                 connections.append((i, j))
                 line = vedo.Line(meshes_projected[i].center_of_mass(), meshes_projected[j].center_of_mass()).lw(4)
                 lines.append(line)
@@ -279,13 +307,13 @@ def main():
         for i, mesh in enumerate(meshes_projected):
 
             texts.append(vedo.Text3D(str(i), pos=mesh.center_of_mass(), c='black', s=10))
-            plotter.show([box, meshes_projected[i]])#, zoom="tightest")
+            plotter.show([box, meshes_projected[i]], zoom="tightest")
             plotter.screenshot(output_folder+"{}.png".format(filenames[i]))
 
             # Clear plotter and for the next mesh
             plotter.clear()
 
-        plotter.show([box, meshes_projected])#, zoom="tightest")
+        plotter.show([box, meshes_projected], zoom="tightest")
         plotter.screenshot(output_folder + "preview.png")
         plotter.clear()
         plotter.show([box, meshes_projected, lines, texts], zoom="tightest")
@@ -295,29 +323,29 @@ def main():
 
 
         # breakpoint()
-        # Code to evaluate the saved images and whether they are correct
-        image_files = natsort.natsorted(glob.glob(output_folder + "*.png"))
-        image_files = list(filter(lambda k: 'preview' not in k, image_files))
+        # # Code to evaluate the saved images and whether they are correct
+        # image_files = natsort.natsorted(glob.glob(output_folder + "*.png"))
+        # image_files = list(filter(lambda k: 'preview' not in k, image_files))
         
-        # Load saved images
-        images = []
-        images_transformed = []
-        for i, image_file in vedo.progressbar(enumerate(image_files)):
-            img = vedo.Image(image_file, channels=4)
-            img_transformed = vedo.Image(image_file, channels=4).apply_transform(tform)
-            # img_transformed = img.clone().apply_transform(tform)
-            images.append(img)
-            images_transformed.append(img_transformed)
+        # # Load saved images
+        # images = []
+        # images_transformed = []
+        # for i, image_file in vedo.progressbar(enumerate(image_files)):
+        #     img = vedo.Image(image_file, channels=4)
+        #     img_transformed = vedo.Image(image_file, channels=4).apply_transform(tform)
+        #     # img_transformed = img.clone().apply_transform(tform)
+        #     images.append(img)
+        #     images_transformed.append(img_transformed)
         
-        # check if the screenshots are correct
-        plt = vedo.Plotter(size=(sizex, sizey))
-        # Without transformation
-        vedo.show(meshes_projected, images, axes=1, zoom="tightest", interactive=True).close()
-        plt.close()
+        # # check if the screenshots are correct
+        # plt = vedo.Plotter(size=(sizex, sizey))
+        # # Without transformation
+        # vedo.show(meshes_projected, images, axes=1, zoom="tightest", interactive=True).close()
+        # plt.close()
         
-        # With transformation
-        vedo.show([meshes_projected, images_transformed], N=2, axes=1, zoom="tightest", interactive=True).close()
-        breakpoint()
+        # # With transformation
+        # vedo.show([meshes_projected, images_transformed], N=2, axes=1, zoom="tightest", interactive=True).close()
+        # breakpoint()
 
     return 0
 
@@ -413,11 +441,16 @@ def cut_with_plane(vedo_pcd):
 
     offset = np.array([0,0,z_offset])
     pos = (np.mean(np.asarray(inlier_cloud.points), axis=0) - offset).tolist()
-    # normal = [a,b,c]
-    # plane = vedo.Plane(pos, normal, s=(300,300)).c("green4")
+    normal = [a,b,c]
+    plane = vedo.Plane(pos, normal, s=(300,300)).c("green4")
 
-    mask = vedo_pcd.points[:,2] < pos[2]
-    ids = np.where(mask)[0]
+    normal_ = normal / np.linalg.norm(normal)
+    vectors = vedo_pcd.points - pos
+    dot_products = np.dot(vectors, normal_)
+    ids = np.where(dot_products < 0)[0]
+
+    # mask = vedo_pcd.points[:,2] < pos[2]
+    # ids = np.where(mask)[0]
     vedo_pcd.delete_cells_by_point_index(ids)
 
     return vedo_pcd
