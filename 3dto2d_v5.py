@@ -132,12 +132,13 @@ def save_json_file(filename, metadata):
 
 # parameters to modify for affecting the output
 # Set the tolerance angle for the surface cut plane, the smaller the angle, the more aggressive, the more faces are removed
-tol_angle = 80
+tol_angle = 60
 # Set the height offset of the plane where everything below is gonna be removed
-z_offset = 1.
+z_offset = 1.5
 
 # HARD CODED PATH
-input_folder_ = '/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED'
+input_folder_ = '/run/user/1000/gvfs/sftp:host=gpu1.dsi.unive.it,user=luca.palmieri/home/ssd/datasets/RePAIR_v2/2_Exported_OBJ/SOLVED'
+ # '/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED'
 
 def main():
     global z_offset
@@ -149,8 +150,8 @@ def main():
     print("Full list of puzzles:\n")
     for puz in puzzles_sorted:
         print(puz)
-
-    for folder_name in puzzles_sorted:
+    # breakpoint()
+    for folder_name in puzzles_sorted[5:25]:
         print("-" * 50)
         print(folder_name)
 
@@ -159,7 +160,7 @@ def main():
 
         # input_folder = '/media/pose_est_rp/repair_gt/3D_Fragments/assembled_objects/'+f.name+'/'
         input_folder = os.path.join(input_folder_, folder_name) + '/'
-        output_folder = input_folder.replace("PUZZLES", "PUZZLES_2D_scale6")
+        output_folder = input_folder.replace("2_Exported_OBJ", "3_Rendered_2D")
 
         if os.path.exists(output_folder):
             continue
@@ -167,7 +168,8 @@ def main():
         os.makedirs(output_folder, exist_ok=True)
         mesh_files = natsort.natsorted(glob.glob(input_folder + "*.obj"))
         texture_files = natsort.natsorted(glob.glob(input_folder + "*.png"))
-        print(f"Found {(mesh_files)} meshes and\n{(texture_files)} textures.")
+        print(f"Found {len(mesh_files)} meshes and\n{len(texture_files)} textures.")
+        print(f"Will save in {output_folder}")
 
         # Create a list to store mesh images and their positions
         fragments = []
@@ -270,7 +272,9 @@ def main():
         # 2D pixel data
         for j, frag in enumerate(fragments):
             frag_data = mesh_data['fragments'][j]
-            frag_data['pixel_pos'] = vedo.Points(np.asarray([frag_data['position']]), c='green', r=10).apply_transform(np.linalg.inv(tform.matrix)).points[0].tolist()
+            reprojected = vedo.Points(np.asarray([frag_data['position']]), c='green', r=10).apply_transform(np.linalg.inv(tform.matrix)).points[0]
+            reprojected[1] = sizey - reprojected[1]
+            frag_data['pixel_position'] = reprojected.tolist()
 
         # Create adjacency matrix for connected pieces
         tiles = copy.deepcopy(meshes_projected)
