@@ -151,7 +151,7 @@ def main():
     for puz in puzzles_sorted:
         print(puz)
     # breakpoint()
-    for folder_name in puzzles_sorted[5:25]:
+    for folder_name in puzzles_sorted:
         print("-" * 50)
         print(folder_name)
 
