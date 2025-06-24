@@ -204,7 +204,7 @@ def main():
             #     z_offset = 1.
             #     m = set_cutplane(m, tol_angle)
 
-            # m = set_cutplane(m, tol_angle)
+            m = set_cutplane(m, tol_angle)
 
             # o3d_mesh = vedo2open3d(m)
             # # o3d.visualization.draw_geometries([o3d_mesh])
