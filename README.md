@@ -18,7 +18,7 @@ The full pipeline then is:
 
 | 3D | 2D |
 |:----:|:-----:|
-|![3d mesh](imgs/blender.jpg)|![rendered 2d image](imgs/v2/adjacency_preview.png.jpg)|
+|![3d mesh](imgs/v2/blender.jpg)|![rendered 2d image](imgs/v2/adjacency_preview.jpg)|
 | The puzzle solved in 3D in Blender | the rendered 2d image *preview* |
 
 For each *puzzle* (group of pieces) we have `data.json` file which contains the information to reassemble the pieces (and one image for each piece, of course).
