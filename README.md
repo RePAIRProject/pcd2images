@@ -1,27 +1,27 @@
 # pcd2images
 
 We updated the rendering process. 
-- If you are looking for information about the first release (End of 2024), check [Version 1](). 
-- If you are looking for the newer one, (June 2025), check [Version 2]().
+- If you are looking for information about the first release (End of 2024), check [Version 1](https://github.com/RePAIRProject/pcd2images?tab=readme-ov-file#version-1). 
+- If you are looking for the newer one, (June 2025), check [Version 2](https://github.com/RePAIRProject/pcd2images?tab=readme-ov-file#version-2).
 
 
 ## Version 2
 
 In this version, after manually improving the 3D alignments, we used a different rendering technique. One of the issue we faced with the first rendering was the 3D segmentation, which sometimes eroded parts of the pieces which we actually wanted to render. 
 To overcome this issue, we switched to a *softer* segmentation approach, trying to remove the faces which are not part of the *top painted surface* (we used larger values for non-flat pieces).
-We rendered using the [`vedo`]() library and alongside with each fragment, we render also a preview (also with adjacency connections drawn on top) to make it easier. 
+We rendered using the [`vedo`](https://vedo.embl.es/) library and alongside with each fragment, we render also a preview (also with adjacency connections drawn on top) to make it easier. 
 
 The full pipeline then is:
 1. Manual alignment in Blender 
-2. Exporting .obj meshes which are considered the 3D Ground Truth (code [here]())
-3. Rendering each .obj mesh as a 2D color image (using [3dto2d_v5.py]())
+2. Exporting .obj meshes which are considered the 3D Ground Truth (code [here](https://github.com/RePAIRProject/repair_ground_truth))
+3. Rendering each .obj mesh as a 2D color image (using [3dto2d_v5.py](https://github.com/RePAIRProject/pcd2images/blob/main/3dto2d_v5.py))
 
-| Puzzle assembled in 3D | Rendered Preview |
+| 3D | 2D |
 |:----:|:-----:|
 |![3d mesh](imgs/blender.jpg)|![rendered 2d image](imgs/v2/adjacency_preview.png.jpg)|
-| the 3d mesh (meshlab) | the rendered 2d image |
+| The puzzle solved in 3D in Blender | the rendered 2d image *preview* |
 
-For each *puzzle* (group of pieces) we have a `data.json` file which contains the information to reassemble the pieces.
+For each *puzzle* (group of pieces) we have `data.json` file which contains the information to reassemble the pieces (and one image for each piece, of course).
 
 ## Version 1
 Code to render image of the top flat *textured* surface of a fresco fragment from its 3D mesh (`.obj`). 
