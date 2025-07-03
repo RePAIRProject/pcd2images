@@ -132,12 +132,12 @@ def save_json_file(filename, metadata):
 
 # parameters to modify for affecting the output
 # Set the tolerance angle for the surface cut plane, the smaller the angle, the more aggressive, the more faces are removed
-tol_angle = 60
+tol_angle = 80
 # Set the height offset of the plane where everything below is gonna be removed
-z_offset = 1.5
+z_offset = 5
 
 # HARD CODED PATH
-input_folder_ = '/run/user/1000/gvfs/sftp:host=gpu1.dsi.unive.it,user=luca.palmieri/home/ssd/datasets/RePAIR_v2/2_Exported_OBJ/SOLVED'
+input_folder_ = '/run/user/1000/gvfs/sftp:host=gpu1.dsi.unive.it,user=luca.palmieri/home/ssd/datasets/RePAIR_v2/2_Exported_OBJ/OPEN_DISCOVERY'
  # '/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED'
 
 def main():
@@ -161,6 +161,7 @@ def main():
         # input_folder = '/media/pose_est_rp/repair_gt/3D_Fragments/assembled_objects/'+f.name+'/'
         input_folder = os.path.join(input_folder_, folder_name) + '/'
         output_folder = input_folder.replace("2_Exported_OBJ", "3_Rendered_2D")
+        # output_folder = output_folder.replace("SOLVED", "SOLVED_Updated")
 
         if os.path.exists(output_folder):
             continue
@@ -276,27 +277,27 @@ def main():
             reprojected[1] = sizey - reprojected[1]
             frag_data['pixel_position'] = reprojected.tolist()
 
-        # Create adjacency matrix for connected pieces
-        tiles = copy.deepcopy(meshes_projected)
-        dists = {}
-        for i, tile1 in enumerate(tiles):
-            tile1.subsample(0.02)
-            for j, tile2 in enumerate(tiles):
-                if i <= j:
-                    continue
-                dist = np.min(tile1.distance_to(tile2))
-                dists[(i, j)] = dist
+        # # Create adjacency matrix for connected pieces
+        # tiles = copy.deepcopy(meshes_projected)
+        # dists = {}
+        # for i, tile1 in enumerate(tiles):
+        #     tile1.subsample(0.02)
+        #     for j, tile2 in enumerate(tiles):
+        #         if i <= j:
+        #             continue
+        #         dist = np.min(tile1.distance_to(tile2))
+        #         dists[(i, j)] = dist
 
-        # Find connections between pieces
-        connections = []
-        lines = []
-        for i, j in dists:
-            if dists[(i, j)] < 8:  # Threshold for connection
-                connections.append((i, j))
-                line = vedo.Line(meshes_projected[i].center_of_mass(), meshes_projected[j].center_of_mass()).lw(4)
-                lines.append(line)
+        # # Find connections between pieces
+        # connections = []
+        # lines = []
+        # for i, j in dists:
+        #     if dists[(i, j)] < 8:  # Threshold for connection
+        #         connections.append((i, j))
+        #         line = vedo.Line(meshes_projected[i].center_of_mass(), meshes_projected[j].center_of_mass()).lw(4)
+        #         lines.append(line)
 
-        mesh_data['adjacency'] = connections
+        # mesh_data['adjacency'] = connections
 
         vedo.settings.screenshot_transparent_background = True
         vedo.settings.use_parallel_projection = True
