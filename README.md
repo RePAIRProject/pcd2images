@@ -23,6 +23,10 @@ The full pipeline then is:
 
 For each *puzzle* (group of pieces) we have `data.json` file which contains the information to reassemble the pieces (and one image for each piece, of course).
 
+| P1 | P2 | P3 | P4 | P5 | P6 | P7 | P8 |
+|:----:|:-----:|:----:|:-----:|:----:|:-----:|:----:|:-----:|
+|![piece](imgs/v2/pieces/RPf_00001.png)|![piece](imgs/v2/pieces/RPf_00002.png)|![piece](imgs/v2/pieces/RPf_00003.png)|![piece](imgs/v2/pieces/RPf_00004.png)|![piece](imgs/v2/pieces/RPf_00005.png)|![piece](imgs/v2/pieces/RPf_00006.png)|![piece](imgs/v2/pieces/RPf_00007.png)|![piece](imgs/v2/pieces/RPf_00008.png)|
+
 ## Version 1
 Code to render image of the top flat *textured* surface of a fresco fragment from its 3D mesh (`.obj`). 
 
