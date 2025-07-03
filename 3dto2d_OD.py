@@ -136,13 +136,8 @@ tol_angle = 60
 # Set the height offset of the plane where everything below is gonna be removed
 z_offset = 1.5
 
-problematics_puzzles_ids =  [ 3,   4,  19,  23,  25,  27,  28,  32,  38,  40,  50,  58,  60,  67,  73,  89,  97, 100, 102, 117, 118, 120, 121]
-tol_angles_problematics =   [80,  90,  80,  80,  80,  80,  80,  60,  60,  60,  60,  80,  80,  80,  80,  80,  80,  80,  80,  90,  90,  60,  60]
-z_offsets =                 [ 3, 6.5, 1.5,   4,   2,   2, 3.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 6.5, 1.5, 1.5, 4.5, 4.5, 4.5, 6.5,  20,   1,   1]
-oks =                       [ 1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1]
-
 # HARD CODED PATH
-input_folder_ = '/run/user/1000/gvfs/sftp:host=gpu1.dsi.unive.it,user=luca.palmieri/home/ssd/datasets/RePAIR_v2/2_Exported_OBJ/SOLVED_Problematics'
+input_folder_ = '/run/user/1000/gvfs/sftp:host=gpu1.dsi.unive.it,user=luca.palmieri/home/ssd/datasets/RePAIR_v2/2_Exported_OBJ/OPEN_DISCOVERY'
  # '/home/lucap/code/RePair_3D_new/PUZZLES/SOLVED'
 
 def main():
@@ -153,16 +148,12 @@ def main():
     puzzles = os.listdir(input_folder_)
     puzzles_sorted = natsort.natsorted(puzzles)
     print("Full list of puzzles:\n")
-    assert len(puzzles_sorted) == len(problematics_puzzles_ids), "missing some puzzle or some numbers"
     for puz in puzzles_sorted:
         print(puz)
     # breakpoint()
     for j, folder_name in enumerate(puzzles_sorted):
         print("-" * 50)
-        print(folder_name)
-        tol_angle = tol_angles_problematics[j]
-        z_offset = z_offsets[j]
-        
+        print(folder_name)      
 
         # if f.name is not "puzzle_0000003_RP_group_3":
         #     continue
@@ -288,27 +279,27 @@ def main():
             reprojected[1] = sizey - reprojected[1]
             frag_data['pixel_position'] = reprojected.tolist()
 
-        # Create adjacency matrix for connected pieces
-        tiles = copy.deepcopy(meshes_projected)
-        dists = {}
-        for i, tile1 in enumerate(tiles):
-            tile1.subsample(0.02)
-            for j, tile2 in enumerate(tiles):
-                if i <= j:
-                    continue
-                dist = np.min(tile1.distance_to(tile2))
-                dists[(i, j)] = dist
+        # # Create adjacency matrix for connected pieces
+        # tiles = copy.deepcopy(meshes_projected)
+        # dists = {}
+        # for i, tile1 in enumerate(tiles):
+        #     tile1.subsample(0.02)
+        #     for j, tile2 in enumerate(tiles):
+        #         if i <= j:
+        #             continue
+        #         dist = np.min(tile1.distance_to(tile2))
+        #         dists[(i, j)] = dist
 
-        # Find connections between pieces
-        connections = []
-        lines = []
-        for i, j in dists:
-            if dists[(i, j)] < 8:  # Threshold for connection
-                connections.append((i, j))
-                line = vedo.Line(meshes_projected[i].center_of_mass(), meshes_projected[j].center_of_mass()).lw(4)
-                lines.append(line)
+        # # Find connections between pieces
+        # connections = []
+        # lines = []
+        # for i, j in dists:
+        #     if dists[(i, j)] < 8:  # Threshold for connection
+        #         connections.append((i, j))
+        #         line = vedo.Line(meshes_projected[i].center_of_mass(), meshes_projected[j].center_of_mass()).lw(4)
+        #         lines.append(line)
 
-        mesh_data['adjacency'] = connections
+        # mesh_data['adjacency'] = connections
 
         vedo.settings.screenshot_transparent_background = True
         vedo.settings.use_parallel_projection = True
@@ -329,13 +320,13 @@ def main():
             # Clear plotter and for the next mesh
             plotter.clear()
 
-        plotter.show([box, meshes_projected], zoom="tightest")
-        plotter.screenshot(output_folder + "preview.png")
-        plotter.clear()
-        plotter.show([box, meshes_projected, lines, texts], zoom="tightest")
-        plotter.screenshot(output_folder + "adjacency_preview.png")
-        plotter.clear()
-        plotter.close()
+        # plotter.show([box, meshes_projected], zoom="tightest")
+        # plotter.screenshot(output_folder + "preview.png")
+        # plotter.clear()
+        # plotter.show([box, meshes_projected, lines, texts], zoom="tightest")
+        # plotter.screenshot(output_folder + "adjacency_preview.png")
+        # plotter.clear()
+        # plotter.close()
 
 
         # breakpoint()
@@ -361,7 +352,7 @@ def main():
         
         # # With transformation
         # vedo.show([meshes_projected, images_transformed], N=2, axes=1, zoom="tightest", interactive=True).close()
-        breakpoint()
+        # breakpoint()
 
     return 0
 
